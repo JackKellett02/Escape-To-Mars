@@ -12,7 +12,7 @@ public class RocketScript : MonoBehaviour {
 	private float rocketMass = 10.0f;
 
 	[SerializeField]
-	private float cameraDistanceZ = -15.0f;
+	private float cameraDistance = 15.0f;
 
 	[SerializeField]
 	private float maxFuelLevel = 100.0f;
@@ -22,6 +22,8 @@ public class RocketScript : MonoBehaviour {
 	#endregion
 
 	#region Variable Declarations
+	private Vector2 cameraPos;
+
 	private GameObject cameraObject = null;
 	private GameObject[] engineObjects = null;
 
@@ -48,6 +50,8 @@ public class RocketScript : MonoBehaviour {
 	#region Private Functions
 	// Start is called before the first frame update
 	void Start() {
+		cameraPos = new Vector2(0.0f, -cameraDistance);
+
 		ResetRocketFuel();
 		CalculateGravity();
 
@@ -119,19 +123,18 @@ public class RocketScript : MonoBehaviour {
 	/// </summary>
 	private void UpdateCameraPosition() {
 		Vector3 rocketPosition = gameObject.transform.position;
-		rocketPosition.z += cameraDistanceZ;
 		cameraObject.transform.position = rocketPosition;
 	}
 
 	private void TurnOnRocketParticleEffects() {
 		for (int i = 0; i < engineObjects.Length; i++) {
-			engineObjects[i].GetComponent<EngineEffectScript>().ActivateParticleEffect();
+			engineObjects[i].GetComponent<EngineEffectScript>().ActivateThrusterEffects();
 		}
 	}
 
 	private void TurnOffRocketParticleEffects() {
 		for (int i = 0; i < engineObjects.Length; i++) {
-			engineObjects[i].GetComponent<EngineEffectScript>().DeactivateParticleEffect();
+			engineObjects[i].GetComponent<EngineEffectScript>().DeactivateThrusterEffects();
 		}
 	}
 
@@ -188,6 +191,10 @@ public class RocketScript : MonoBehaviour {
 	#region Public Access Functions (Getters and Setters)
 	public void SetLaunchToTrue() {
 		launched = true;
+	}
+
+	public bool GetHasLaunched() {
+		return launched;
 	}
 
 	public float GetFuelLevel() {
