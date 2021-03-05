@@ -46,12 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71512959659b1d84ca6c96058711401d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfThrusters: 1
-  gravity: 9.81
+  numberOfThrusters: 9
   rocketMass: 439094.78
-  cameraDistanceZ: -25
-  maxFuelLevel: 134564.27
-  powerOfThruster: 8829000
+  cameraDistance: 15
+  baseFuelLevel: 134564.27
+  powerOfThruster: 981000
 --- !u!1 &4603972348700969196
 GameObject:
   m_ObjectHideFlags: 0

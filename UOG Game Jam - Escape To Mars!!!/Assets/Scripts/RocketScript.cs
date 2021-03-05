@@ -15,7 +15,7 @@ public class RocketScript : MonoBehaviour {
 	private float cameraDistance = 15.0f;
 
 	[SerializeField]
-	private float maxFuelLevel = 100.0f;
+	private float baseFuelLevel = 100.0f;
 
 	[SerializeField]
 	private float powerOfThruster = 196.2f;
@@ -31,6 +31,7 @@ public class RocketScript : MonoBehaviour {
 	private bool hasFuel = true;
 	private bool engineEffectsOn = false;
 
+	private static float numberOfCoins = 0.0f;
 	private static float highestDistanceTravelled = 0.0f;
 	private float distanceTravelled = 0.0f;
 	private float velocity = 0.0f;
@@ -56,7 +57,7 @@ public class RocketScript : MonoBehaviour {
 		CalculateGravity();
 
 		//Add Fuel to rocket mass.
-		totalMass = rocketMass + (currentFuelLevel * 0.81715f);
+		totalMass = rocketMass + (currentFuelLevel * 0.81715f) + (470.0f * numberOfThrusters);
 
 		CalculateFuelConsumptionRate();
 		rocketThrust = powerOfThruster * numberOfThrusters;
@@ -67,11 +68,21 @@ public class RocketScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		//Pre-launch stuff
+		if (Input.GetKeyDown(KeyCode.Escape) && !launched) {
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+		}
+		if (!launched) {
+			rocketThrust = powerOfThruster * numberOfThrusters;
+			CalculateFuelConsumptionRate();
+			ResetRocketFuel();
+		}
+
 		UpdateCameraPosition();
 		CalculateGravity();
 
 		//Add Fuel to rocket mass.
-		totalMass = rocketMass + (currentFuelLevel * 0.81715f);
+		totalMass = rocketMass + (currentFuelLevel * 0.81715f) + (470.0f * numberOfThrusters);
 
 		//Check Fuel Level.
 		hasFuel = CheckIfRocketHasFuel();
@@ -107,6 +118,7 @@ public class RocketScript : MonoBehaviour {
 					highestDistanceTravelled = distanceTravelled;
 				}
 			} else {
+				numberOfCoins += distanceTravelled;
 				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 		}
@@ -143,14 +155,14 @@ public class RocketScript : MonoBehaviour {
 	/// Resets the rocket Fuel To Max.
 	/// </summary>
 	private void ResetRocketFuel() {
-		currentFuelLevel = maxFuelLevel;
+		currentFuelLevel = baseFuelLevel;
 	}
 
 	/// <summary>
 	/// Calculates the fuel consumption rate based on the power and number of thrusters.
 	/// </summary>
 	private void CalculateFuelConsumptionRate() {
-		float thrusterConsumption = 1774.890981f;
+		float thrusterConsumption = 1774.890981f / 9.0f;
 		rocketFuelConsumption = thrusterConsumption * numberOfThrusters;
 	}
 
@@ -189,10 +201,27 @@ public class RocketScript : MonoBehaviour {
 	#endregion
 
 	#region Public Access Functions (Getters and Setters)
+	public void AddFloatToFuel() {
+		if(numberOfCoins >= 1000.0f) {
+			baseFuelLevel += 1000.0f;
+			numberOfCoins -= 1000.0f;
+		}
+	}
+
+	public void AddThruster() {
+		if (numberOfCoins >= 1000.0f) {
+			numberOfThrusters += 1;
+			numberOfCoins -= 1000.0f;
+		}
+	}
+
 	public void SetLaunchToTrue() {
 		launched = true;
 	}
 
+	public static float GetCoins() {
+		return numberOfCoins;
+	}
 	public bool GetHasLaunched() {
 		return launched;
 	}
@@ -211,6 +240,10 @@ public class RocketScript : MonoBehaviour {
 
 	public float GetHighestDistance() {
 		return highestDistanceTravelled;
+	}
+
+	public float GetThrust() {
+		return rocketThrust;
 	}
 	#endregion
 }

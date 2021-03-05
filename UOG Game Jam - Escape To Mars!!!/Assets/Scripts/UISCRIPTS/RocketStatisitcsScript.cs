@@ -9,6 +9,9 @@ public class RocketStatisitcsScript : MonoBehaviour {
 	private Text fuelTextObject = null;
 
 	[SerializeField]
+	private Text thrustTextObject = null;
+
+	[SerializeField]
 	private Text distanceTextObject = null;
 
 	[SerializeField]
@@ -22,7 +25,8 @@ public class RocketStatisitcsScript : MonoBehaviour {
 	private RocketScript rocket = null;
 
 	private string fuelText = "Fuel: ";
-	private string distanceText = "Distance: ";
+	private string thrustText = "Thrust: ";
+	private string distanceText = "Height: ";
 	private string velocityText = "Velocity: ";
 	private string highestDistanceText = "Highest: ";
 	#endregion
@@ -36,6 +40,7 @@ public class RocketStatisitcsScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		fuelTextObject.text = fuelText + rocket.GetFuelLevel() + " litres";
+		thrustTextObject.text = thrustText + rocket.GetThrust() + " N";
 		distanceTextObject.text = distanceText + rocket.GetDistanceTravelled() + " m";
 		velocityTextObject.text = velocityText + rocket.GetCurrentVelocity() + " m/s";
 		highestDistanceTextObject.text = highestDistanceText + rocket.GetHighestDistance() + " m";
