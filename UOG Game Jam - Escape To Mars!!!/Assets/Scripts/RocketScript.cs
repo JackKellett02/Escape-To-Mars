@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class RocketScript : MonoBehaviour {
 	#region Variables to assign via the unity inspector (Serialize Fields)
-	[SerializeField]
-	private int numberOfThrusters = 1;
 
 	[SerializeField]
 	private float rocketMass = 10.0f;
@@ -15,10 +13,7 @@ public class RocketScript : MonoBehaviour {
 	private float cameraDistance = 15.0f;
 
 	[SerializeField]
-	private float baseFuelLevel = 100.0f;
-
-	[SerializeField]
-	private float powerOfThruster = 196.2f;
+	private float powerOfThruster = 981000.0f;
 	#endregion
 
 	#region Variable Declarations
@@ -31,6 +26,8 @@ public class RocketScript : MonoBehaviour {
 	private bool hasFuel = true;
 	private bool engineEffectsOn = false;
 
+	private static int numberOfThrusters = 9;
+	private static float baseFuelLevel = 134564.3f;
 	private static float numberOfCoins = 0.0f;
 	private static float highestDistanceTravelled = 0.0f;
 	private float distanceTravelled = 0.0f;
